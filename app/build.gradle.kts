@@ -51,4 +51,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     //Circle image dependency
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    //Glide dependency
+    implementation("com.github.bumptech.glide:glide:5.0.5")
 }
