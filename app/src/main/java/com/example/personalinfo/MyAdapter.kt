@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 
-class MyAdapter(private val data: List<SampleModel>): RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+class MyAdapter(private val data: List<SampleModel>, private val listener: OnClickListener): RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+    
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val profile = itemView.findViewById<CircleImageView>(R.id.profile_image)
         val userName = itemView.findViewById<TextView>(R.id.userName)
@@ -25,9 +26,17 @@ class MyAdapter(private val data: List<SampleModel>): RecyclerView.Adapter<MyAda
         holder.userName.text = currentItem.userName
         holder.number.text = currentItem.number
         Glide.with(holder.profile.context).load(currentItem.image).placeholder(R.drawable.loading_profile).error(R.drawable.loading_profile).into(holder.profile)
+
+        holder.itemView.setOnClickListener {
+            listener.OnClick(position, currentItem)
+        }
     }
 
     override fun getItemCount(): Int {
         return data.size
+    }
+    
+    interface OnClickListener {
+        fun OnClick(position: Int, model: SampleModel)
     }
 }

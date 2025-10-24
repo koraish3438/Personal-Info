@@ -1,5 +1,6 @@
 package com.example.personalinfo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -19,13 +20,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         loadData()
-        setupRecyclerView()
-        
-    }
 
-    private fun setupRecyclerView() {
-        binding.recyclerView.adapter = MyAdapter(listItem)
+        val adapter = MyAdapter(listItem, object : MyAdapter.OnClickListener {
+            override fun OnClick(position: Int, model: SampleModel) {
+                try {
+                    val intent = Intent(this@MainActivity, ShowActivity::class.java)
+                    intent.putExtra("name", model.userName)
+                    intent.putExtra("number", model.number)
+                    intent.putExtra("image", model.image)
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        })
+
+
+        binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        
     }
 
     private fun loadData() {
@@ -65,6 +78,5 @@ class MainActivity : AppCompatActivity() {
             SampleModel("https://randomuser.me/api/portraits/men/23.jpg", "Bappy", "01745678901")
 
         )
-
     }
 }
